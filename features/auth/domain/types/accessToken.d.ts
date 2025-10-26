@@ -1,7 +1,9 @@
-export interface TokenStorage {
+export interface TokenData {
   access_token: string;
   refresh_token: string;
 }
+
+export type TokenStorage = TokenData | null;
 
 export interface AuthToken {
   access_token: string;

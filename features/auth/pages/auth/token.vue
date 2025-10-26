@@ -2,6 +2,7 @@
 import CreateAuthorizationTokenUseCase from "~/features/auth/application/useCases/createAuthorizationToken.useCase";
 import AuthRepository from "~/features/auth/infrastructure/repositories/authRepository";
 import type { TokenStorage } from "~/features/auth/domain/types/accessToken";
+import { AUTH_TOKEN_LOCAL_STORAGE } from "../../domain/tokens/authToken";
 
 const { code } = useRoute().query;
 
@@ -21,7 +22,7 @@ if (error.value || !data.value) {
   navigateTo("/auth/login");
 }
 
-const token = useCookie<TokenStorage | null>("token");
+const token = useCookie<TokenStorage>(AUTH_TOKEN_LOCAL_STORAGE);
 token.value = data.value
   ? {
       access_token: data.value.data.access_token,

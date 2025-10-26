@@ -1,27 +1,20 @@
 <script setup lang="ts">
-import GetAuthorizeUriUseCase from "~/features/auth/application/useCases/getAuthorizeUri.useCase";
-import AuthRepository from "~/features/auth/infrastructure/repositories/authRepository";
+import { AUTH_TOKEN_LOCAL_STORAGE } from "~/features/auth/domain/tokens/authToken";
+import type { TokenStorage } from "~/features/auth/domain/types/accessToken";
 
-const showButton = ref(false);
-const buttonUrl = ref("");
+const token = useCookie<TokenStorage>(AUTH_TOKEN_LOCAL_STORAGE);
 
-onBeforeMount(async () => {
-  const getAuthorizeUriUseCase = new GetAuthorizeUriUseCase(
-    new AuthRepository()
-  );
-
-  await getAuthorizeUriUseCase.execute();
-
-  // showButton.value = true;
-  // buttonUrl.value = uri;
-});
+if (!token.value?.access_token) {
+  navigateTo("/auth/login");
+}
 </script>
 
 <template>
   <AnimuxContainer>
     <h1>Your anime list</h1>
+    <NuxtLink to="/auth/login">Login</NuxtLink>
     <ClientOnly>
-      <button class="btn btn-primary">Get anime list</button>
+      <AnimeListComponent />
     </ClientOnly>
     <!-- <AnimeListComponent /> -->
   </AnimuxContainer>
