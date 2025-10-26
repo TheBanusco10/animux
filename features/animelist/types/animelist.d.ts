@@ -1,4 +1,4 @@
-import type { AnimeDetails, Status } from "../../shared/types/anime";
+import type { AnimeDetails, Status } from "../../shared/domain/types/anime";
 
 export interface AnimeListResult {
   data: Daum[];

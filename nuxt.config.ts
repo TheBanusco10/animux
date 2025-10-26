@@ -14,4 +14,9 @@ export default defineNuxtConfig({
     "./features/auth/nuxt.config.ts",
     "./features/shared/nuxt.config.ts",
   ],
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: "",
+    },
+  },
 });

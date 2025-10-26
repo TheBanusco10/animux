@@ -1,4 +1,4 @@
-import type { Status } from "~/features/shared/types/anime";
+import type { Status } from "~/features/shared/domain/types/anime";
 
 export default () => {
   const getAnimeStatusColorByStatus = (status: Status) => {

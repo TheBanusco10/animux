@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AnimeDetails } from "~/features/shared/types/anime";
+import type { AnimeDetails } from "~/features/shared/domain/types/anime";
 import type { ListStatus } from "~/features/animelist/types/animelist";
 
 interface Props {
