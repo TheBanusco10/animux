@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { ModalRef } from "~/features/shared/domain/types/components/modal";
 import GetAnimelistUseCase from "../../application/useCases/getAnimelist.useCase";
 import { AnimeListRepository } from "../../infrastructure/repositories/animelistRepository";
+import type { AnimelistData } from "../../domain/types/animelist";
 
 // const getAnimelistUseCase = new GetAnimelistUseCase(new AnimeListRepository());
 // const { data: animelist } = await useAsyncData("userAnimelist", () =>
@@ -88,14 +90,31 @@ const animelist = {
     next: "https://api.myanimelist.net/v2/users/@me/animelist?offset=4&fields=list_status&limit=4",
   },
 };
+
+const editItemModal = ref<ModalRef>();
+const selectedAnime = ref<AnimelistData | null>(null);
+
+const handleShowEditItemModal = (animeData: AnimelistData) => {
+  selectedAnime.value = animeData;
+  editItemModal.value?.dialogElement.showModal();
+};
 </script>
 
 <template>
-  <section class="grid grid-cols-2 md:grid-cols-6 lg:grid-cols-8 gap-4">
+  <section
+    class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-4"
+  >
     <AnimeListThumbnail
       v-for="animeData in animelist.data"
       :key="animeData.node.id"
       :animeData="animeData"
+      @on-edit-item="handleShowEditItemModal(animeData)"
     />
   </section>
+  <AnimuxModal id="editItemModal" ref="editItemModal">
+    <template #title>Edit anime</template>
+    <template #content>
+      <p>{{ selectedAnime?.node.title }}</p>
+    </template>
+  </AnimuxModal>
 </template>

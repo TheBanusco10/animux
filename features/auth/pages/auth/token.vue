@@ -23,12 +23,7 @@ if (error.value || !data.value) {
 }
 
 const token = useCookie<TokenStorage>(AUTH_TOKEN_LOCAL_STORAGE);
-token.value = data.value
-  ? {
-      access_token: data.value.data.access_token,
-      refresh_token: data.value.data.refresh_token,
-    }
-  : null;
+token.value = data.value?.data ?? null;
 
 navigateTo("/animelist");
 </script>

@@ -16,6 +16,5 @@ if (!token.value?.access_token) {
     <ClientOnly>
       <AnimeListComponent />
     </ClientOnly>
-    <!-- <AnimeListComponent /> -->
   </AnimuxContainer>
 </template>

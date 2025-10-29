@@ -5,6 +5,8 @@ interface Props {
   animeData: AnimelistData;
 }
 
+defineEmits(["onEditItem"]);
+
 const props = defineProps<Props>();
 const { animeData } = props;
 const { title, main_picture } = animeData.node;
@@ -13,7 +15,7 @@ const { score } = animeData.list_status;
 
 <template>
   <article
-    class="relative w-auto h-52 rounded overflow-hidden hover:shadow-md hover:shadow-primary/60 transition-all duration-150"
+    class="relative w-auto h-56 rounded overflow-hidden hover:shadow-md hover:shadow-primary/30 transition-all duration-150"
   >
     <section
       class="absolute w-full h-full top-0 left-0 flex flex-col justify-between"
@@ -28,11 +30,14 @@ const { score } = animeData.list_status;
       </div>
       <div class="flex justify-between items-center p-2">
         <p
-          class="w-10 h-10 flex items-center justify-center bg-accent p-2 rounded-full"
+          class="w-8 h-8 flex items-center justify-center bg-accent p-2 rounded-full"
         >
           <span class="text-accent-content"> {{ score }} </span>
         </p>
-        <button class="btn btn-primary btn-circle btn-sm">
+        <button
+          class="btn btn-primary btn-circle btn-sm"
+          @click="$emit('onEditItem', animeData)"
+        >
           <Icon name="mdi:pencil-outline" size="16" />
         </button>
       </div>
