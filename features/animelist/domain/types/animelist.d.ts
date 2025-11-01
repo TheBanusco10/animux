@@ -19,10 +19,9 @@ export type AnimeStatus =
 export interface ListStatus {
   status: string;
   score: number;
-  num_watched_episodes?: number;
+  num_episodes_watched?: number;
   is_rewatching: boolean;
   updated_at: string;
-  num_episodes_watched?: number;
 }
 
 export interface Node {

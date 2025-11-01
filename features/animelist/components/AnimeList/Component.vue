@@ -2,7 +2,8 @@
 import type { ModalRef } from "~/features/shared/domain/types/components/modal";
 import GetAnimelistUseCase from "../../application/useCases/getAnimelist.useCase";
 import { AnimeListRepository } from "../../infrastructure/repositories/animelistRepository";
-import type { AnimelistData } from "../../domain/types/animelist";
+import type { AnimelistData, ListStatus } from "../../domain/types/animelist";
+import UpdateAnimelistUseCase from "../../application/useCases/updateAnimelist.useCase";
 
 // const getAnimelistUseCase = new GetAnimelistUseCase(new AnimeListRepository());
 // const { data: animelist } = await useAsyncData("userAnimelist", () =>
@@ -94,9 +95,35 @@ const animelist = {
 const editItemModal = ref<ModalRef>();
 const selectedAnime = ref<AnimelistData | null>(null);
 
+const animeDataToUpdate = ref<
+  Pick<ListStatus, "score" | "num_episodes_watched">
+>({
+  score: 0,
+  num_episodes_watched: 0,
+});
+
 const handleShowEditItemModal = (animeData: AnimelistData) => {
   selectedAnime.value = animeData;
+  animeDataToUpdate.value = {
+    score: animeData.list_status.score,
+    num_episodes_watched: animeData.list_status.num_episodes_watched ?? 0,
+  };
   editItemModal.value?.dialogElement.showModal();
+};
+
+const handleUpdateAnime = async () => {
+  if (!animeDataToUpdate.value || !selectedAnime.value) return;
+
+  const updateAnimelistUseCase = new UpdateAnimelistUseCase(
+    new AnimeListRepository()
+  );
+
+  const updatedAnimelist = await updateAnimelistUseCase.execute(
+    selectedAnime.value.node.id,
+    animeDataToUpdate.value
+  );
+
+  console.log(updatedAnimelist);
 };
 </script>
 
@@ -114,7 +141,25 @@ const handleShowEditItemModal = (animeData: AnimelistData) => {
   <AnimuxModal id="editItemModal" ref="editItemModal">
     <template #title>Edit anime</template>
     <template #content>
-      <p>{{ selectedAnime?.node.title }}</p>
+      <p class="mb-4">{{ selectedAnime?.node.title }}</p>
+      <section class="grid grid-cols-2 gap-2">
+        <label class="input">
+          <span class="label">Score</span>
+          <input type="number" v-model="animeDataToUpdate.score" />
+        </label>
+        <label class="input">
+          <span class="label">Episodes watched</span>
+          <input
+            type="number"
+            v-model="animeDataToUpdate.num_episodes_watched"
+          />
+        </label>
+      </section>
+    </template>
+    <template #action>
+      <button type="button" class="btn btn-primary" @click="handleUpdateAnime">
+        Update
+      </button>
     </template>
   </AnimuxModal>
 </template>
