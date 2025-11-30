@@ -2,10 +2,13 @@ import type IAnimelistRepository from "~/features/animelist/domain/repositories/
 import type { Animelist, ListStatus } from "../../domain/types/animelist";
 
 export class AnimeListRepository implements IAnimelistRepository {
-  async getAnimelist() {
-    const { data, error } = await useApiFetch<Animelist>("/animelist", {
-      server: false,
-    });
+  async getAnimelist(offset?: number) {
+    const { data, error } = await useApiFetch<Animelist>(
+      `/animelist?offset=${offset}`,
+      {
+        server: false,
+      }
+    );
 
     if (error.value || !data.value) {
       throw new Error("Failed to get user animelist");

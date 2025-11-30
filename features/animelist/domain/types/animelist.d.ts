@@ -36,5 +36,17 @@ export interface MainPicture {
 }
 
 export interface Paging {
-  next: string;
+  next?: string;
+  previous?: string;
+}
+
+export interface AnimelistOutput extends Omit<Animelist, "paging"> {
+  paging: {
+    next?: {
+      offset: number;
+    };
+    previous?: {
+      offset: number;
+    };
+  };
 }
